@@ -1,0 +1,420 @@
+-- phpMyAdmin SQL Dump
+-- version 5.1.3
+-- https://www.phpmyadmin.net/
+--
+-- Gép: 127.0.0.1
+-- Létrehozás ideje: 2023. Dec 28. 00:18
+-- Kiszolgáló verziója: 10.4.24-MariaDB
+-- PHP verzió: 8.1.4
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Adatbázis: `baba`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `egeszseg`
+--
+
+CREATE TABLE `egeszseg` (
+  `Id` int(11) NOT NULL,
+  `BabaId` int(11) NOT NULL,
+  `Orvosnev` varchar(256) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `EgeszsegDatum` date DEFAULT NULL,
+  `EgeszsegTort` varchar(2048) COLLATE utf8mb4_hungarian_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `elsojaras`
+--
+
+CREATE TABLE `elsojaras` (
+  `Id` int(11) NOT NULL,
+  `BabaId` int(11) NOT NULL,
+  `ElsojarasDatum` date DEFAULT NULL,
+  `ElsojarasTort` varchar(2048) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `ElsojarasKep` longblob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `elsorajz`
+--
+
+CREATE TABLE `elsorajz` (
+  `Id` int(11) NOT NULL,
+  `BabaId` int(11) NOT NULL,
+  `ElsorajzKep` longblob NOT NULL,
+  `ElsorajzDatum` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `elsoszavak`
+--
+
+CREATE TABLE `elsoszavak` (
+  `Id` int(11) NOT NULL,
+  `BabaId` int(11) NOT NULL,
+  `ElsoszavakTort` varchar(2048) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `Elsoszavak` varchar(256) COLLATE utf8mb4_hungarian_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `etkezesek`
+--
+
+CREATE TABLE `etkezesek` (
+  `Id` int(11) NOT NULL,
+  `BabaId` int(11) NOT NULL,
+  `EtkezesTort` varchar(2048) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `EtkezesKep` longblob NOT NULL,
+  `EtkezesDatum` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `husvet`
+--
+
+CREATE TABLE `husvet` (
+  `Id` int(11) NOT NULL,
+  `BabaId` int(11) NOT NULL,
+  `Husvetikep` longblob NOT NULL,
+  `Husvetitort` varchar(2048) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `Husvetiajandekkep` longblob NOT NULL,
+  `HusvetDatum` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `karacsony`
+--
+
+CREATE TABLE `karacsony` (
+  `Id` int(11) NOT NULL,
+  `Karacsonyikep` longblob NOT NULL,
+  `BabaId` int(11) NOT NULL,
+  `Ajandekok` varchar(2048) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `Ajandekokkep` longblob NOT NULL,
+  `Karacsonytort` varchar(2048) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `KaracsonyDatum` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `keresztelo`
+--
+
+CREATE TABLE `keresztelo` (
+  `Id` int(11) NOT NULL,
+  `keresztelohely` varchar(128) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `keresztelodatum` date DEFAULT NULL,
+  `keresztapa` varchar(128) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `keresztanya` varchar(128) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `keresztelokep` longblob NOT NULL,
+  `keresztelotortenet` varchar(2048) COLLATE utf8mb4_hungarian_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `magassagmeres`
+--
+
+CREATE TABLE `magassagmeres` (
+  `Id` int(11) NOT NULL,
+  `BabaId` int(11) NOT NULL,
+  `Magassag` int(3) NOT NULL,
+  `MagassagDatum` date DEFAULT NULL,
+  `MagassagKep` longblob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `merfoldkovek`
+--
+
+CREATE TABLE `merfoldkovek` (
+  `Id` int(11) NOT NULL,
+  `Elsokepotthon` longblob NOT NULL,
+  `Alvasiszokas` varchar(2048) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `Evesiszokas` varchar(2048) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `Elsofurdeteskep` longblob NOT NULL,
+  `Elsomosolykep` longblob NOT NULL,
+  `Elsoalvasikep` longblob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `nyaralasok`
+--
+
+CREATE TABLE `nyaralasok` (
+  `Id` int(11) NOT NULL,
+  `BabaId` int(11) NOT NULL,
+  `NyaralasKep` longblob NOT NULL,
+  `NyaralasHely` varchar(256) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `NyaralasDatum` date DEFAULT NULL,
+  `NyaralasTort` varchar(2048) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `NyaralasVegeDatum` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `sulymeres`
+--
+
+CREATE TABLE `sulymeres` (
+  `Id` int(11) NOT NULL,
+  `BabaId` int(11) NOT NULL,
+  `Suly` int(3) NOT NULL,
+  `SulyDatum` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `szuletes`
+--
+
+CREATE TABLE `szuletes` (
+  `Id` int(11) NOT NULL,
+  `Nev` varchar(256) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `Datum` date DEFAULT NULL,
+  `Ora` int(2) NOT NULL,
+  `Perc` int(2) NOT NULL,
+  `Hely` varchar(256) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `Suly` int(3) NOT NULL,
+  `Hossz` int(2) NOT NULL,
+  `Hajszin` varchar(64) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `Szemszin` varchar(64) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `Vercsoport` varchar(2) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `Csillagjegy` varchar(64) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `Szuletestort` varchar(2048) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `Babafoto` longblob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `szuletesnapok`
+--
+
+CREATE TABLE `szuletesnapok` (
+  `Id` int(11) NOT NULL,
+  `BabaId` int(11) NOT NULL,
+  `SzuletesnapDatum` date DEFAULT NULL,
+  `SzuletesnapTort` varchar(2048) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `SzuletesnapiKep` longblob NOT NULL,
+  `SzuletesnapAjandekKep` longblob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+--
+-- Indexek a kiírt táblákhoz
+--
+
+--
+-- A tábla indexei `egeszseg`
+--
+ALTER TABLE `egeszseg`
+  ADD UNIQUE KEY `Id` (`Id`),
+  ADD UNIQUE KEY `BabaId` (`BabaId`);
+
+--
+-- A tábla indexei `elsojaras`
+--
+ALTER TABLE `elsojaras`
+  ADD UNIQUE KEY `Id` (`Id`),
+  ADD UNIQUE KEY `BabaId` (`BabaId`);
+
+--
+-- A tábla indexei `elsorajz`
+--
+ALTER TABLE `elsorajz`
+  ADD UNIQUE KEY `Id` (`Id`),
+  ADD UNIQUE KEY `BabaId` (`BabaId`);
+
+--
+-- A tábla indexei `elsoszavak`
+--
+ALTER TABLE `elsoszavak`
+  ADD UNIQUE KEY `Id` (`Id`),
+  ADD UNIQUE KEY `BabaId` (`BabaId`);
+
+--
+-- A tábla indexei `etkezesek`
+--
+ALTER TABLE `etkezesek`
+  ADD UNIQUE KEY `Id` (`Id`),
+  ADD UNIQUE KEY `BabaId` (`BabaId`);
+
+--
+-- A tábla indexei `husvet`
+--
+ALTER TABLE `husvet`
+  ADD UNIQUE KEY `Id` (`Id`),
+  ADD UNIQUE KEY `BabaId` (`BabaId`);
+
+--
+-- A tábla indexei `karacsony`
+--
+ALTER TABLE `karacsony`
+  ADD UNIQUE KEY `Id` (`Id`),
+  ADD UNIQUE KEY `BabaId` (`BabaId`);
+
+--
+-- A tábla indexei `keresztelo`
+--
+ALTER TABLE `keresztelo`
+  ADD UNIQUE KEY `Id` (`Id`);
+
+--
+-- A tábla indexei `magassagmeres`
+--
+ALTER TABLE `magassagmeres`
+  ADD UNIQUE KEY `Id` (`Id`),
+  ADD UNIQUE KEY `BabaId` (`BabaId`);
+
+--
+-- A tábla indexei `merfoldkovek`
+--
+ALTER TABLE `merfoldkovek`
+  ADD UNIQUE KEY `Id` (`Id`);
+
+--
+-- A tábla indexei `nyaralasok`
+--
+ALTER TABLE `nyaralasok`
+  ADD UNIQUE KEY `Id` (`Id`),
+  ADD UNIQUE KEY `BabaId` (`BabaId`);
+
+--
+-- A tábla indexei `sulymeres`
+--
+ALTER TABLE `sulymeres`
+  ADD UNIQUE KEY `Id` (`Id`),
+  ADD UNIQUE KEY `BabaId` (`BabaId`);
+
+--
+-- A tábla indexei `szuletes`
+--
+ALTER TABLE `szuletes`
+  ADD UNIQUE KEY `Id` (`Id`);
+
+--
+-- A tábla indexei `szuletesnapok`
+--
+ALTER TABLE `szuletesnapok`
+  ADD UNIQUE KEY `Id` (`Id`),
+  ADD UNIQUE KEY `BabaId` (`BabaId`);
+
+--
+-- A kiírt táblák AUTO_INCREMENT értéke
+--
+
+--
+-- AUTO_INCREMENT a táblához `egeszseg`
+--
+ALTER TABLE `egeszseg`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `elsojaras`
+--
+ALTER TABLE `elsojaras`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `elsorajz`
+--
+ALTER TABLE `elsorajz`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `elsoszavak`
+--
+ALTER TABLE `elsoszavak`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `etkezesek`
+--
+ALTER TABLE `etkezesek`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `karacsony`
+--
+ALTER TABLE `karacsony`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `keresztelo`
+--
+ALTER TABLE `keresztelo`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `magassagmeres`
+--
+ALTER TABLE `magassagmeres`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `merfoldkovek`
+--
+ALTER TABLE `merfoldkovek`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `nyaralasok`
+--
+ALTER TABLE `nyaralasok`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `sulymeres`
+--
+ALTER TABLE `sulymeres`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `szuletes`
+--
+ALTER TABLE `szuletes`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `szuletesnapok`
+--
+ALTER TABLE `szuletesnapok`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
