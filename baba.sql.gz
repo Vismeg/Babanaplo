@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2023. Dec 28. 00:18
+-- Létrehozás ideje: 2023. Dec 31. 18:19
 -- Kiszolgáló verziója: 10.4.24-MariaDB
 -- PHP verzió: 8.1.4
 
@@ -20,6 +20,20 @@ SET time_zone = "+00:00";
 --
 -- Adatbázis: `baba`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `alvas`
+--
+
+CREATE TABLE `alvas` (
+  `Id` int(11) NOT NULL,
+  `BabaId` int(11) NOT NULL,
+  `Datum` date NOT NULL,
+  `Leiras` varchar(2048) COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `AlvasKep` longblob NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 -- --------------------------------------------------------
 
@@ -128,6 +142,7 @@ CREATE TABLE `karacsony` (
 
 CREATE TABLE `keresztelo` (
   `Id` int(11) NOT NULL,
+  `BabaId` int(11) NOT NULL,
   `keresztelohely` varchar(128) COLLATE utf8mb4_hungarian_ci NOT NULL,
   `keresztelodatum` date DEFAULT NULL,
   `keresztapa` varchar(128) COLLATE utf8mb4_hungarian_ci NOT NULL,
@@ -158,6 +173,7 @@ CREATE TABLE `magassagmeres` (
 
 CREATE TABLE `merfoldkovek` (
   `Id` int(11) NOT NULL,
+  `BabaId` int(11) NOT NULL,
   `Elsokepotthon` longblob NOT NULL,
   `Alvasiszokas` varchar(2048) COLLATE utf8mb4_hungarian_ci NOT NULL,
   `Evesiszokas` varchar(2048) COLLATE utf8mb4_hungarian_ci NOT NULL,
@@ -238,6 +254,13 @@ CREATE TABLE `szuletesnapok` (
 --
 
 --
+-- A tábla indexei `alvas`
+--
+ALTER TABLE `alvas`
+  ADD UNIQUE KEY `Id` (`Id`) USING BTREE,
+  ADD UNIQUE KEY `BabaId` (`BabaId`);
+
+--
 -- A tábla indexei `egeszseg`
 --
 ALTER TABLE `egeszseg`
@@ -290,7 +313,8 @@ ALTER TABLE `karacsony`
 -- A tábla indexei `keresztelo`
 --
 ALTER TABLE `keresztelo`
-  ADD UNIQUE KEY `Id` (`Id`);
+  ADD UNIQUE KEY `Id` (`Id`),
+  ADD UNIQUE KEY `BabaId` (`BabaId`);
 
 --
 -- A tábla indexei `magassagmeres`
@@ -303,7 +327,8 @@ ALTER TABLE `magassagmeres`
 -- A tábla indexei `merfoldkovek`
 --
 ALTER TABLE `merfoldkovek`
-  ADD UNIQUE KEY `Id` (`Id`);
+  ADD UNIQUE KEY `Id` (`Id`),
+  ADD UNIQUE KEY `BabaId` (`BabaId`);
 
 --
 -- A tábla indexei `nyaralasok`
@@ -335,6 +360,12 @@ ALTER TABLE `szuletesnapok`
 --
 -- A kiírt táblák AUTO_INCREMENT értéke
 --
+
+--
+-- AUTO_INCREMENT a táblához `alvas`
+--
+ALTER TABLE `alvas`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `egeszseg`
@@ -413,6 +444,94 @@ ALTER TABLE `szuletes`
 --
 ALTER TABLE `szuletesnapok`
   MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Megkötések a kiírt táblákhoz
+--
+
+--
+-- Megkötések a táblához `alvas`
+--
+ALTER TABLE `alvas`
+  ADD CONSTRAINT `alvas_ibfk_1` FOREIGN KEY (`BabaId`) REFERENCES `szuletes` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `egeszseg`
+--
+ALTER TABLE `egeszseg`
+  ADD CONSTRAINT `egeszseg_ibfk_1` FOREIGN KEY (`BabaId`) REFERENCES `szuletes` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `elsojaras`
+--
+ALTER TABLE `elsojaras`
+  ADD CONSTRAINT `elsojaras_ibfk_1` FOREIGN KEY (`BabaId`) REFERENCES `szuletes` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `elsorajz`
+--
+ALTER TABLE `elsorajz`
+  ADD CONSTRAINT `elsorajz_ibfk_1` FOREIGN KEY (`BabaId`) REFERENCES `szuletes` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `elsoszavak`
+--
+ALTER TABLE `elsoszavak`
+  ADD CONSTRAINT `elsoszavak_ibfk_1` FOREIGN KEY (`BabaId`) REFERENCES `szuletes` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `etkezesek`
+--
+ALTER TABLE `etkezesek`
+  ADD CONSTRAINT `etkezesek_ibfk_1` FOREIGN KEY (`BabaId`) REFERENCES `szuletes` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `husvet`
+--
+ALTER TABLE `husvet`
+  ADD CONSTRAINT `husvet_ibfk_1` FOREIGN KEY (`BabaId`) REFERENCES `szuletes` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `karacsony`
+--
+ALTER TABLE `karacsony`
+  ADD CONSTRAINT `karacsony_ibfk_1` FOREIGN KEY (`BabaId`) REFERENCES `szuletes` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `keresztelo`
+--
+ALTER TABLE `keresztelo`
+  ADD CONSTRAINT `keresztelo_ibfk_1` FOREIGN KEY (`BabaId`) REFERENCES `szuletes` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `magassagmeres`
+--
+ALTER TABLE `magassagmeres`
+  ADD CONSTRAINT `magassagmeres_ibfk_1` FOREIGN KEY (`BabaId`) REFERENCES `szuletes` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `merfoldkovek`
+--
+ALTER TABLE `merfoldkovek`
+  ADD CONSTRAINT `merfoldkovek_ibfk_1` FOREIGN KEY (`BabaId`) REFERENCES `szuletes` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `nyaralasok`
+--
+ALTER TABLE `nyaralasok`
+  ADD CONSTRAINT `nyaralasok_ibfk_1` FOREIGN KEY (`BabaId`) REFERENCES `szuletes` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `sulymeres`
+--
+ALTER TABLE `sulymeres`
+  ADD CONSTRAINT `sulymeres_ibfk_1` FOREIGN KEY (`BabaId`) REFERENCES `szuletes` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `szuletesnapok`
+--
+ALTER TABLE `szuletesnapok`
+  ADD CONSTRAINT `szuletesnapok_ibfk_1` FOREIGN KEY (`BabaId`) REFERENCES `szuletes` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
